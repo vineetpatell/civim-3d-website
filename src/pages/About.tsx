@@ -23,7 +23,7 @@ const ABOUT_FAQ = [
   },
   {
     q: 'How do I buy CIVIM GRAINS products?',
-    a: 'Message us on WhatsApp at +91 8450912454 for the current list, pack sizes, prices and order confirmation.',
+    a: 'Browse the Shop, add items to your cart and go to checkout. Prices and pack sizes are confirmed before your order is placed — or contact us directly and we will help.',
   },
 ]
 
@@ -119,7 +119,7 @@ export function AboutPage() {
         </Reveal>
       </section>
 
-      <section className="section page-section page-section--forest" aria-labelledby="about-process-h">
+      <section className="section page-section page-section--forest" id="process" aria-labelledby="about-process-h">
         <Reveal className="shell">
           <span className="eyebrow eyebrow--light" data-reveal>
             How Mustard Oil Is Made

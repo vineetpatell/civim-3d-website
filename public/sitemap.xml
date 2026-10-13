@@ -4,6 +4,7 @@
     CIVIM GRAINS sitemap. Canonical URLs use SITE.siteUrl
     (src/lib/site.ts). TODO(LAUNCH): confirm the production domain and
     replace https://www.civimgrains.com everywhere. Never publish localhost.
+    Cart and checkout are noindex and deliberately excluded.
   -->
   <url>
     <loc>https://www.civimgrains.com/</loc>
@@ -19,6 +20,46 @@
     <loc>https://www.civimgrains.com/shop</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.civimgrains.com/shop/mustard-oil</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.civimgrains.com/shop/ponni-rice</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.civimgrains.com/shop/basmati-rice</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.civimgrains.com/shop/sona-masoori-rice</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.civimgrains.com/shop/sharbati-wheat-flour</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.civimgrains.com/shop/lokwan-wheat-flour</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.civimgrains.com/shop/multigrain-flour-without-wheat</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.civimgrains.com/shop/pulses-and-dals</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.civimgrains.com/contact</loc>

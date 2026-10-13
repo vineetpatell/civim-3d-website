@@ -1,17 +1,22 @@
 import { Link } from 'react-router-dom'
 import type { Product } from '../lib/products'
-import { whatsappUrl, productEnquiryMessage } from '../lib/whatsapp'
+import { formatPrice, unitPrice } from '../lib/products'
+import { useCart } from '../lib/cart'
 
 /**
- * Product card: real photo when available, clean placeholder tile otherwise.
- * Never fabricated packaging. Supports name / category / verified description
- * / verified detail + WhatsApp CTA.
+ * Product card for grids and carousels:
+ * real photo (or honest placeholder), name, category, price only when
+ * confirmed, Add to Cart + View Details. Unpriced items show a clear
+ * "Price to be confirmed" state — never a fabricated number.
  */
 export function ProductCard({ product }: { product: Product }) {
-  const wa = whatsappUrl(productEnquiryMessage(product.name))
+  const { add, lastAdded } = useCart()
+  const price = unitPrice(product)
+  const justAdded = lastAdded === product.slug
+
   return (
     <article className="product-card">
-      <div className="product-card__media">
+      <Link className="product-card__media" to={`/shop/${product.slug}`} tabIndex={-1}>
         {product.image ? (
           <img
             src={product.image}
@@ -23,38 +28,47 @@ export function ProductCard({ product }: { product: Product }) {
             className="product-card__img product-card__img--bottle"
           />
         ) : (
-          <div className="product-card__placeholder" aria-hidden="true">
+          <div className="product-card__placeholder">
             <span className="product-card__placeholder-brand">CIVIM</span>
             <span className="product-card__placeholder-cat">{product.category}</span>
-            <span className="product-card__placeholder-note">
-              Photo coming soon
-            </span>
+            <span className="product-card__placeholder-note">Photo coming soon</span>
           </div>
         )}
         <span className="product-card__cat">{product.category}</span>
-      </div>
+      </Link>
+
       <div className="product-card__body">
-        <h3 className="product-card__name">{product.name}</h3>
-        <p className="product-card__desc">{product.description}</p>
+        <h3 className="product-card__name">
+          <Link to={`/shop/${product.slug}`}>{product.name}</Link>
+        </h3>
         {product.detail && <p className="product-card__detail">{product.detail}</p>}
+
+        <div className="product-card__price">
+          {price !== null ? (
+            <span className="product-card__price-value">{formatPrice(price)}</span>
+          ) : (
+            <span className="product-card__price-tbc">Price to be confirmed</span>
+          )}
+        </div>
+
         <div className="product-card__actions">
-          <a
+          <button
+            type="button"
             className="btn btn--primary btn--sm"
-            href={wa}
-            target="_blank"
-            rel="noopener noreferrer"
+            onClick={() => add(product.slug)}
+            aria-label={`Add ${product.name} to cart`}
           >
-            Ask on WhatsApp
-          </a>
-          <Link className="btn btn--ghost btn--sm" to="/contact">
-            Contact
+            {justAdded ? 'Added ✓' : 'Add to Cart'}
+          </button>
+          <Link className="btn btn--ghost btn--sm" to={`/shop/${product.slug}`}>
+            View Details
           </Link>
         </div>
-        <span className="sr-only">
-          {product.image
-            ? undefined
-            : `${product.name}: product photograph not yet available, placeholder shown.`}
-        </span>
+        {!product.image && (
+          <span className="sr-only">
+            {product.name}: product photograph not yet available, placeholder shown.
+          </span>
+        )}
       </div>
     </article>
   )

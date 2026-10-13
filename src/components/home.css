@@ -1,0 +1,231 @@
+/* ============================================================
+   Home sections below the approved hero:
+   featured row · campaign banner · shop-by-staple · process
+   story · quality/philosophy. Scoped — no hero selectors.
+   ============================================================ */
+
+/* --- Featured products --------------------------------------------- */
+.featured-row {
+  background: var(--ivory);
+}
+
+.featured-row .product-grid {
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+/* --- Campaign banner ------------------------------------------------ */
+.campaign {
+  background: var(--forest);
+  color: var(--cream);
+  overflow: hidden;
+}
+
+.campaign__grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: center;
+  padding-block: clamp(4rem, 9vw, 7rem);
+}
+
+.campaign h2 {
+  color: var(--cream);
+  font-size: clamp(2.6rem, 6vw, 4.6rem);
+  margin-top: 1.1rem;
+}
+
+.campaign h2 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--mustard-light);
+}
+
+.campaign__copy p {
+  margin-top: 1.4rem;
+  max-width: 46ch;
+  line-height: 1.75;
+  color: rgba(252, 250, 244, 0.85);
+}
+
+.campaign__media {
+  display: flex;
+  justify-content: center;
+}
+
+.campaign__media img {
+  height: clamp(320px, 42vw, 520px);
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 34px 44px rgba(0, 0, 0, 0.35));
+}
+
+/* --- Shop by staple -------------------------------------------------- */
+.staple-shop {
+  background: var(--cream);
+  border-block: 1px solid var(--line);
+}
+
+.staple-shop > .shell > h2 {
+  font-size: clamp(2rem, 4.4vw, 3.2rem);
+  margin-top: 0.8rem;
+}
+
+.staple-block {
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+  padding-top: clamp(2rem, 4vw, 3rem);
+  border-top: 1px solid var(--line);
+}
+
+.staple-block__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.staple-block__head h3 {
+  font-size: clamp(1.6rem, 3vw, 2.3rem);
+}
+
+.staple-block__head p {
+  margin-top: 0.6rem;
+  max-width: 52ch;
+  color: var(--charcoal-soft);
+  line-height: 1.65;
+}
+
+.staple-block .carousel__item {
+  width: min(78vw, 280px);
+}
+
+.staple-block .product-card {
+  height: 100%;
+}
+
+/* --- Process story (home) -------------------------------------------- */
+.process-story {
+  background: var(--ivory);
+}
+
+.steps-grid {
+  list-style: none;
+  margin: clamp(2.5rem, 5vw, 4rem) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.steps-grid__item {
+  background: var(--ivory);
+  padding: clamp(1.5rem, 3vw, 2.4rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.steps-grid__num {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  color: var(--mustard);
+  letter-spacing: 0.12em;
+}
+
+.steps-grid__item h3 {
+  font-size: 1.35rem;
+}
+
+.steps-grid__item p {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--charcoal-soft);
+}
+
+/* --- Quality / philosophy --------------------------------------------- */
+.philosophy {
+  background: var(--forest);
+  color: var(--cream);
+}
+
+.philosophy__grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: start;
+}
+
+.philosophy h2 {
+  color: var(--cream);
+  font-size: clamp(2.2rem, 4.6vw, 3.6rem);
+  margin-top: 1rem;
+}
+
+.philosophy h2 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--mustard-light);
+}
+
+.philosophy__head p {
+  margin-top: 1.3rem;
+  line-height: 1.75;
+  color: rgba(252, 250, 244, 0.82);
+  max-width: 44ch;
+}
+
+.philosophy__cards {
+  display: grid;
+  gap: 1px;
+  background: rgba(252, 250, 244, 0.16);
+  border: 1px solid rgba(252, 250, 244, 0.16);
+}
+
+.philosophy__cards article {
+  background: var(--forest);
+  padding: clamp(1.4rem, 3vw, 2.2rem);
+}
+
+.philosophy__cards h3 {
+  color: var(--cream);
+  font-size: 1.35rem;
+  margin-bottom: 0.6rem;
+}
+
+.philosophy__cards p {
+  color: rgba(252, 250, 244, 0.78);
+  line-height: 1.65;
+  font-size: 0.96rem;
+}
+
+/* --- FAQ extras -------------------------------------------------------- */
+.faq-wrap__more {
+  margin-top: 1.8rem;
+  font-size: 0.92rem;
+  color: var(--charcoal-soft);
+}
+
+/* --- Responsive -------------------------------------------------------- */
+@media (max-width: 960px) {
+  .campaign__grid,
+  .philosophy__grid {
+    grid-template-columns: 1fr;
+  }
+  .campaign__media img {
+    height: clamp(260px, 60vw, 380px);
+  }
+  .steps-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .steps-grid {
+    grid-template-columns: 1fr;
+  }
+  .section-head {
+    align-items: flex-start;
+  }
+}

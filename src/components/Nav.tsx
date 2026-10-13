@@ -1,18 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { gsap, useGSAP } from '../lib/gsap'
-import { CONTACT, ROUTES } from '../lib/site'
-import { whatsappUrl, GENERAL_ENQUIRY_MESSAGE } from '../lib/whatsapp'
+import { LOGO, ROUTES } from '../lib/site'
+import { useCart } from '../lib/cart'
 
 /**
- * Simplified header: wordmark + Home / About / Shop / Contact + one
- * "Order on WhatsApp" CTA. Mobile gets a real menu (no hidden links).
+ * Header: official logo + wordmark, Home / About / Shop / Contact,
+ * a cart icon with live item count, and a real mobile menu.
+ * (No WhatsApp ordering CTA — ordering flows through the cart/checkout.)
  */
 export function Nav() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const navRef = useRef<HTMLElement>(null)
   const location = useLocation()
+  const { count } = useCart()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -45,8 +47,18 @@ export function Nav() {
     <header ref={navRef} className={`nav${scrolled ? ' nav--scrolled' : ''}`}>
       <div className="shell nav__inner">
         <Link className="nav__brand" to="/" aria-label="CIVIM GRAINS home">
-          <span className="nav__brand-name">CIVIM</span>
-          <span className="nav__brand-tag">Grains · Kisaan Se Rasoi Tak</span>
+          <img
+            className="nav__logo"
+            src={LOGO.src}
+            alt="CIVIM GRAINS official logo"
+            width={512}
+            height={512}
+            style={{ aspectRatio: LOGO.aspectRatio }}
+          />
+          <span className="nav__brand-text">
+            <span className="nav__brand-name">CIVIM GRAINS</span>
+            <span className="nav__brand-tag">Kisaan Se Rasoi Tak</span>
+          </span>
         </Link>
 
         <nav aria-label="Primary">
@@ -66,14 +78,25 @@ export function Nav() {
         </nav>
 
         <div className="nav__right">
-          <a
-            className="btn btn--primary nav__cta"
-            href={whatsappUrl(GENERAL_ENQUIRY_MESSAGE)}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Order on WhatsApp
-          </a>
+          <Link className="nav__cart" to="/cart" aria-label={`Cart, ${count} item${count === 1 ? '' : 's'}`}>
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+              <path
+                d="M4 5h2l1.2 10.2a1.5 1.5 0 0 0 1.5 1.35h7.9a1.5 1.5 0 0 0 1.47-1.2L20 8H7"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <circle cx="10" cy="19.6" r="1.4" fill="currentColor" />
+              <circle cx="16.6" cy="19.6" r="1.4" fill="currentColor" />
+            </svg>
+            {count > 0 && (
+              <span className="nav__cart-count" aria-hidden="true">
+                {count > 99 ? '99+' : count}
+              </span>
+            )}
+          </Link>
           <button
             type="button"
             className="nav__burger"
@@ -100,13 +123,7 @@ export function Nav() {
               </li>
             ))}
             <li>
-              <a
-                href={whatsappUrl(GENERAL_ENQUIRY_MESSAGE)}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Order on WhatsApp — {CONTACT.phoneDisplay}
-              </a>
+              <NavLink to="/cart">Cart ({count})</NavLink>
             </li>
           </ul>
         </nav>

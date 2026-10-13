@@ -1,13 +1,57 @@
-import { useRef } from 'react'
+import { useRef, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { gsap, useGSAP } from '../lib/gsap'
-import { CONTACT, SITE } from '../lib/site'
-import { whatsappUrl, GENERAL_ENQUIRY_MESSAGE } from '../lib/whatsapp'
+import { CATEGORIES } from '../lib/products'
+import { CREDIT, CONTACT, LOGO, SOCIALS, SITE } from '../lib/site'
+
+function InstagramIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+      <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" strokeWidth="1.7" />
+      <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="1.7" />
+      <circle cx="17.2" cy="6.8" r="1.2" fill="currentColor" />
+    </svg>
+  )
+}
+
+function FacebookIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+      <path
+        d="M14 8.5V7a1.5 1.5 0 0 1 1.5-1.5H17V3h-2.5A3.5 3.5 0 0 0 11 6.5V8.5H9V11h2v10h3V11h2.2l.4-2.5H14z"
+        fill="currentColor"
+      />
+    </svg>
+  )
+}
+
+function LinkedinIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+      <path
+        d="M6.5 9.5H4V20h2.5V9.5zM5.25 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM20 13.9c0-2.6-1.4-3.9-3.3-3.9-1.5 0-2.2.8-2.6 1.4V9.5H11.6V20h2.5v-5.6c0-1.3.7-2.1 1.8-2.1s1.7.8 1.7 2.1V20H20v-6.1z"
+        fill="currentColor"
+      />
+    </svg>
+  )
+}
+
+interface SocialDef {
+  name: string
+  url: string | null
+  icon: ReactNode
+}
+
+const SOCIAL_DEFS: SocialDef[] = [
+  { name: 'Instagram', url: SOCIALS.instagram, icon: <InstagramIcon /> },
+  { name: 'Facebook', url: SOCIALS.facebook, icon: <FacebookIcon /> },
+  { name: 'LinkedIn', url: SOCIALS.linkedin, icon: <LinkedinIcon /> },
+]
 
 /**
- * Premium footer with a gentle curved upper edge (SVG, no overflow).
- * Brand + tagline + short description, page links, contact info, shop link
- * and the single WhatsApp order CTA.
+ * Footer: curved upper edge, official logo, brand blurb, navigation, shop
+ * categories, contact, FAQ + legal links, social icons (real URLs only —
+ * clearly marked placeholders otherwise) and the NES credit link.
  */
 export function Footer() {
   const ref = useRef<HTMLElement>(null)
@@ -41,26 +85,52 @@ export function Footer() {
       </div>
       <div className="shell">
         <div className="footer__top">
-          <div>
+          <div className="footer__brandcol">
+            <img
+              className="footer__logo"
+              src={LOGO.src}
+              alt="CIVIM GRAINS official logo"
+              width={512}
+              height={512}
+              style={{ aspectRatio: LOGO.aspectRatio }}
+              data-reveal
+            />
             <div className="footer__brand-name" data-reveal>
               CIVIM GRAINS
             </div>
             <div className="footer__tag" data-reveal>
               {SITE.tagline} · {SITE.brandLine}
             </div>
-            <p className="footer__claim" data-reveal>
-              Everyday staples for Indian kitchens — mustard oil, rice, flours
-              and pulses.
+            <p className="footer__note" data-reveal>
+              Everyday staples for Indian kitchens — 100% Pure Mustard Oil, rice,
+              wheat and multigrain flours, and pulses.
             </p>
-            <a
-              className="btn btn--whatsapp footer__cta"
-              data-reveal
-              href={whatsappUrl(GENERAL_ENQUIRY_MESSAGE)}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Order on WhatsApp
-            </a>
+            <div className="footer__socials" data-reveal>
+              {SOCIAL_DEFS.map((s) =>
+                s.url ? (
+                  <a
+                    key={s.name}
+                    className="footer__social"
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`CIVIM GRAINS on ${s.name}`}
+                  >
+                    {s.icon}
+                  </a>
+                ) : (
+                  <span
+                    key={s.name}
+                    className="footer__social footer__social--pending"
+                    role="img"
+                    aria-label={`${s.name} profile URL not configured yet`}
+                    title={`${s.name} profile URL not configured — add it in src/lib/site.ts (SOCIALS)`}
+                  >
+                    {s.icon}
+                  </span>
+                ),
+              )}
+            </div>
           </div>
 
           <nav className="footer__links" aria-label="Explore">
@@ -82,6 +152,15 @@ export function Footer() {
             </Link>
           </nav>
 
+          <nav className="footer__links" aria-label="Shop categories">
+            <span className="footer__links-title">Shop</span>
+            {CATEGORIES.filter((c) => c.name !== 'All').map((c) => (
+              <Link key={c.name} to={`/shop?category=${encodeURIComponent(c.name)}`} data-reveal>
+                {c.name}
+              </Link>
+            ))}
+          </nav>
+
           <div className="footer__contact">
             <span className="footer__links-title">Contact</span>
             <a href={CONTACT.phoneHref} data-reveal>
@@ -99,25 +178,32 @@ export function Footer() {
             >
               Open in Google Maps
             </a>
-          </div>
-
-          <nav className="footer__links" aria-label="Legal">
-            <span className="footer__links-title">Legal</span>
+            <Link to="/contact#faq" data-reveal>
+              FAQ &amp; Support
+            </Link>
             <Link to="/contact" data-reveal>
               Privacy &amp; Terms
             </Link>
-            <Link to="/shop" data-reveal>
-              Products
-            </Link>
-            <Link to="/about" data-reveal>
-              Our Approach
-            </Link>
-          </nav>
+          </div>
         </div>
 
         <div className="footer__bottom">
           <span>© {new Date().getFullYear()} CIVIM GRAINS. All rights reserved.</span>
-          <span>Kisaan Se Rasoi Tak.</span>
+          <span className="footer__credit">
+            Designed &amp; Developed by{' '}
+            {CREDIT.url ? (
+              <a href={CREDIT.url} target="_blank" rel="noopener noreferrer">
+                {CREDIT.company}
+              </a>
+            ) : (
+              <span
+                className="footer__credit-pending"
+                title="NES website URL not configured — add it in src/lib/site.ts (CREDIT.url)"
+              >
+                {CREDIT.company}
+              </span>
+            )}
+          </span>
         </div>
       </div>
     </footer>

@@ -1,0 +1,367 @@
+/* ============================================================
+   Storefront styles — scoped to the redesign BELOW the hero,
+   plus header/footer commerce additions.
+   The approved hero rules live in nav-hero.css + real-bottle.css
+   and must never be edited here (no .hero* selectors below).
+   ============================================================ */
+
+/* --- Header: official logo + cart --------------------------------- */
+.nav__brand {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.nav__logo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.nav__brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.nav__cart {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  color: var(--forest-deep);
+  border: 1px solid transparent;
+  border-radius: 50%;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.nav__cart:hover {
+  background: rgba(23, 61, 43, 0.08);
+  border-color: var(--line);
+}
+
+.nav__cart-count {
+  position: absolute;
+  top: 2px;
+  right: 0;
+  min-width: 18px;
+  height: 18px;
+  padding-inline: 4px;
+  border-radius: 9px;
+  background: var(--mustard);
+  color: var(--forest-deep);
+  font-size: 0.66rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* --- Carousel ------------------------------------------------------ */
+.carousel {
+  position: relative;
+  margin-top: clamp(1.6rem, 3vw, 2.4rem);
+}
+
+.carousel__track {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 4px;
+  padding-bottom: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  scrollbar-width: none;
+}
+
+.carousel__track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel__track > * {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
+
+.carousel__track:focus-visible {
+  outline: 2px solid var(--mustard);
+  outline-offset: 4px;
+}
+
+.carousel__controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.carousel__btn {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  background: var(--cream);
+  color: var(--forest-deep);
+  font-size: 1.05rem;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.3s, border-color 0.3s, opacity 0.3s;
+}
+
+.carousel__btn:hover:not(:disabled) {
+  background: var(--forest);
+  color: var(--cream);
+  border-color: var(--forest);
+}
+
+.carousel__btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* --- Trust strip --------------------------------------------------- */
+.trust-strip {
+  background: var(--cream);
+  border-block: 1px solid var(--line);
+  padding-block: clamp(2.4rem, 5vw, 3.6rem);
+}
+
+.trust-card {
+  width: min(78vw, 280px);
+  background: var(--ivory);
+  border: 1px solid var(--line);
+  padding: 1.4rem 1.3rem 1.5rem;
+}
+
+.trust-card__dot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--mustard);
+  margin-bottom: 0.9rem;
+}
+
+.trust-card h3 {
+  font-size: 1.12rem;
+  margin-bottom: 0.5rem;
+}
+
+.trust-card p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--charcoal-soft);
+}
+
+/* --- Section heads ------------------------------------------------- */
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.section-head h2 {
+  font-size: clamp(2rem, 4.4vw, 3.2rem);
+  margin-top: 0.8rem;
+  max-width: 20ch;
+}
+
+.section-head__note {
+  margin-top: 1rem;
+  max-width: 56ch;
+  color: var(--charcoal-soft);
+  line-height: 1.7;
+}
+
+/* --- Category tiles ------------------------------------------------ */
+.cat-tile {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  width: min(80vw, 300px);
+  height: 340px;
+  padding: 1.6rem;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out);
+}
+
+.cat-tile:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 40px rgba(28, 58, 43, 0.16);
+}
+
+.cat-tile__body {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.cat-tile__name {
+  font-family: var(--font-serif);
+  font-size: 1.7rem;
+  font-weight: 600;
+  line-height: 1.05;
+}
+
+.cat-tile__blurb {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  opacity: 0.82;
+}
+
+.cat-tile__cta {
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.cat-tile__img {
+  position: absolute;
+  top: -8%;
+  right: -6%;
+  height: 88%;
+  width: auto;
+  object-fit: contain;
+  z-index: 1;
+  mix-blend-mode: multiply;
+}
+
+.cat-tile--oil {
+  background: linear-gradient(160deg, #f0e7d2 0%, #e6d7b4 100%);
+  color: var(--forest-deep);
+}
+.cat-tile--rice {
+  background: var(--forest);
+  color: var(--cream);
+}
+.cat-tile--wheat {
+  background: var(--mustard);
+  color: var(--forest-deep);
+}
+.cat-tile--multi {
+  background: var(--charcoal);
+  color: var(--mustard-light);
+}
+.cat-tile--pulse {
+  background-color: var(--cream);
+  color: var(--forest);
+  background-image: radial-gradient(rgba(23, 61, 43, 0.14) 1.5px, transparent 1.5px);
+  background-size: 18px 18px;
+}
+
+/* --- Product card price + shop tools ------------------------------- */
+.product-card__price {
+  margin-top: 0.4rem;
+  min-height: 1.5rem;
+}
+
+.product-card__price-value {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--forest-deep);
+}
+
+.product-card__price-tbc,
+.price-tbc {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--mustard);
+  letter-spacing: 0.02em;
+}
+
+.shop-tools__inputs {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.shop-sort {
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  padding: 0.72rem 1rem;
+  border: 1px solid var(--line);
+  background: var(--cream);
+  color: var(--charcoal);
+  border-radius: 2px;
+  min-width: 190px;
+}
+
+.shop-count {
+  margin-top: 1.6rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--charcoal-soft);
+}
+
+/* --- Footer additions (logo, socials, credit) ---------------------- */
+.footer__logo {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
+
+.footer__socials {
+  display: flex;
+  gap: 0.7rem;
+  margin-top: 1.3rem;
+}
+
+.footer__social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(252, 250, 244, 0.28);
+  border-radius: 50%;
+  color: rgba(252, 250, 244, 0.9);
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
+}
+
+a.footer__social:hover {
+  background: var(--mustard);
+  border-color: var(--mustard);
+  color: var(--forest-deep);
+}
+
+.footer__social--pending {
+  opacity: 0.45;
+  cursor: help;
+  border-style: dashed;
+}
+
+.footer__credit {
+  color: rgba(252, 250, 244, 0.55);
+}
+
+.footer__credit a {
+  color: var(--mustard-light);
+  border-bottom: 1px solid rgba(228, 185, 90, 0.5);
+}
+
+.footer__credit a:hover {
+  color: var(--cream);
+}
+
+.footer__credit-pending {
+  color: rgba(252, 250, 244, 0.75);
+  cursor: help;
+  border-bottom: 1px dotted rgba(252, 250, 244, 0.5);
+}
+
+.footer__contact a[href^="mailto"] {
+  word-break: break-word;
+}

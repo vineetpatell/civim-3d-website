@@ -11,6 +11,8 @@ interface SeoProps {
   description: string
   path: string
   image?: string
+  /** Set for cart/checkout (and any non-public route). */
+  noindex?: boolean
   breadcrumbs?: Breadcrumb[]
   jsonLd?: Record<string, unknown>[]
 }
@@ -19,17 +21,19 @@ interface SeoProps {
  * Per-route SEO for the SPA.
  *
  * Sets unique title / meta description / Open Graph tags on navigation.
- * Canonical + og:url are intentionally OMITTED until the production domain
- * is confirmed (see SITE.siteUrl) — we never publish localhost URLs.
- * JSON-LD is limited to accurate entities: Organization, WebSite and
- * BreadcrumbList. No Product / review / price / availability markup, because
- * those details are unverified.
+ * Canonical + og:url are emitted ONLY when SITE.siteUrlConfirmed is true —
+ * we never publish a canonical pointing at an unverified domain or localhost.
+ * `noindex` marks transactional routes (cart/checkout) as noindex,nofollow.
+ * JSON-LD is limited to accurate entities: Organization, WebSite,
+ * BreadcrumbList (and caller-supplied verified blocks such as Product —
+ * never with invented price/rating/availability data).
  */
-export function Seo({ title, description, image, breadcrumbs, jsonLd }: SeoProps) {
+export function Seo({ title, description, path, image, noindex, breadcrumbs, jsonLd }: SeoProps) {
   useEffect(() => {
     document.title = title
 
     setMeta('description', description)
+    setMeta('robots', noindex ? 'noindex, nofollow' : 'index, follow')
     setMeta('og:title', title, 'property')
     setMeta('og:description', description, 'property')
     setMeta('og:type', 'website', 'property')
@@ -38,8 +42,23 @@ export function Seo({ title, description, image, breadcrumbs, jsonLd }: SeoProps
     setMeta('twitter:title', title)
     setMeta('twitter:description', description)
     if (image) {
-      setMeta('og:image', image, 'property')
-      setMeta('twitter:image', image)
+      const abs = image.startsWith('http') ? image : `${SITE.siteUrl}${image}`
+      setMeta('og:image', abs, 'property')
+      setMeta('twitter:image', abs)
+    }
+
+    // Canonical — only from the confirmed production domain.
+    let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')
+    if (SITE.siteUrlConfirmed) {
+      if (!canonical) {
+        canonical = document.createElement('link')
+        canonical.rel = 'canonical'
+        document.head.appendChild(canonical)
+      }
+      canonical.href = `${SITE.siteUrl}${path === '/' ? '/' : path}`
+      setMeta('og:url', `${SITE.siteUrl}${path === '/' ? '/' : path}`, 'property')
+    } else if (canonical) {
+      canonical.remove()
     }
 
     // Structured data: replace previous route's blocks.
@@ -59,7 +78,7 @@ export function Seo({ title, description, image, breadcrumbs, jsonLd }: SeoProps
       script.text = JSON.stringify(block)
       document.head.appendChild(script)
     }
-  }, [title, description, image, breadcrumbs, jsonLd])
+  }, [title, description, image, noindex, path, breadcrumbs, jsonLd])
 
   return null
 }
@@ -117,4 +136,43 @@ function breadcrumbJsonLd(items: Breadcrumb[]): Record<string, unknown> {
       item: `${SITE.siteUrl}${item.path}`,
     })),
   }
+}
+
+/**
+ * Product structured data — VERIFIED fields only.
+ * Deliberately omits offers/price/availability/rating unless the caller
+ * passes a confirmed price, so no fabricated commerce data is ever published.
+ */
+export function productJsonLd(input: {
+  name: string
+  description: string
+  path: string
+  image?: string | null
+  price?: number | null
+  category?: string
+}): Record<string, unknown> {
+  const block: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: input.name,
+    description: input.description,
+    brand: { '@type': 'Brand', name: SITE.name },
+    url: `${SITE.siteUrl}${input.path}`,
+  }
+  if (input.category) block.category = input.category
+  if (input.image) {
+    block.image = input.image.startsWith('http')
+      ? input.image
+      : `${SITE.siteUrl}${input.image}`
+  }
+  // Only publish an offer when a real price exists — never invent one.
+  if (typeof input.price === 'number') {
+    block.offers = {
+      '@type': 'Offer',
+      price: input.price,
+      priceCurrency: 'INR',
+      url: `${SITE.siteUrl}${input.path}`,
+    }
+  }
+  return block
 }
