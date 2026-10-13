@@ -1,0 +1,441 @@
+/* ============================================================
+   Nav
+   ============================================================ */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  transition: background 0.4s, box-shadow 0.4s, padding 0.4s;
+  padding-block: 1.4rem;
+}
+
+/* Subtle top scrim so the brand, links and CTA stay legible over the studio
+   wash and read as a distinct layer above the 3D hero. */
+.nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to bottom,
+    rgba(247, 243, 234, 0.72) 0%,
+    rgba(247, 243, 234, 0.38) 45%,
+    rgba(247, 243, 234, 0) 100%
+  );
+  opacity: 1;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+
+.nav--scrolled::before {
+  opacity: 0;
+}
+
+.nav--scrolled {
+  background: rgba(247, 243, 234, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 var(--line);
+  padding-block: 0.9rem;
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.nav__brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.nav__brand-name {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: 0.02em;
+  color: var(--forest-deep);
+}
+
+.nav__brand-tag {
+  font-size: 0.62rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--mustard);
+  margin-top: 0.35rem;
+}
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav__links a {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--charcoal);
+  position: relative;
+  padding-block: 0.25rem;
+}
+
+.nav__links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--mustard);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease-out);
+}
+
+.nav__links a:hover::after {
+  transform: scaleX(1);
+}
+
+.nav__cta {
+  padding: 0.6rem 1.15rem;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 820px) {
+  .nav {
+    padding-block: 1rem;
+  }
+  .nav__inner {
+    gap: 0.75rem;
+  }
+  .nav__links {
+    display: none;
+  }
+  .nav__brand-name {
+    font-size: 1.15rem;
+  }
+  .nav__brand-tag {
+    font-size: 0.56rem;
+    letter-spacing: 0.2em;
+  }
+  .nav__cta {
+    padding: 0.55rem 0.95rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}
+
+/* ============================================================
+   Hero — cinematic scroll-driven 3D
+   Two-column editorial composition: copy left, bottle right.
+   ============================================================ */
+.hero {
+  position: relative;
+  height: 320vh;
+}
+
+.hero__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* Full-bleed 3D stage behind the editorial column. */
+.hero__canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.hero__canvas canvas {
+  display: block;
+}
+
+/* Warm studio wash + a soft radial pool behind the bottle so the glass reads
+   against a premium surface rather than flat white. */
+.hero__stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(
+      120% 80% at 78% 42%,
+      rgba(224, 180, 79, 0.16) 0%,
+      rgba(224, 180, 79, 0) 55%
+    ),
+    radial-gradient(
+      90% 70% at 12% 8%,
+      rgba(28, 58, 43, 0.06) 0%,
+      rgba(28, 58, 43, 0) 60%
+    );
+  pointer-events: none;
+}
+
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* The grid reserves the left column for copy; the real bottle shows on the
+   right as the hero centerpiece. */
+.hero__grid {
+  position: relative;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: 1fr;
+  align-items: stretch;
+}
+
+.hero__editorial {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
+  max-width: 32rem;
+  padding-block: 6rem; /* clears the fixed nav */
+  will-change: transform, opacity;
+}
+
+.hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--mustard);
+  margin-bottom: 1.6rem;
+}
+
+.hero__eyebrow-dot {
+  width: 22px;
+  height: 1px;
+  background: var(--mustard);
+  display: inline-block;
+}
+
+.hero__title {
+  font-size: clamp(2.9rem, 6.2vw, 5.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: var(--forest-deep);
+  margin: 0;
+  overflow-wrap: break-word;
+}
+
+.hero__title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--mustard);
+}
+
+.hero__sub {
+  margin-top: 1.5rem;
+  font-size: clamp(1.02rem, 1.4vw, 1.2rem);
+  line-height: 1.65;
+  color: var(--charcoal-soft);
+  max-width: 36ch;
+}
+
+.hero__actions {
+  margin-top: 2.2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem;
+  pointer-events: auto; /* buttons are interactive */
+}
+
+.hero__claim {
+  margin-top: 2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--forest);
+}
+
+.hero__claim-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--mustard);
+  box-shadow: 0 0 0 4px rgba(194, 145, 43, 0.16);
+}
+
+/* Pour accent — overlays the right column low, above the bottle photo. */
+.hero__pour {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: end;
+  justify-self: end;
+  z-index: 3;
+  text-align: right;
+  padding-right: clamp(0.5rem, 3vw, 3rem);
+  padding-bottom: clamp(2rem, 8vh, 6rem);
+  opacity: 0;
+  max-width: 22rem;
+}
+
+.hero__pour-mark {
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: var(--mustard);
+  margin-left: auto;
+  margin-bottom: 1rem;
+}
+
+.hero__pour h2 {
+  font-size: clamp(1.8rem, 3.4vw, 2.8rem);
+  line-height: 1.02;
+  color: var(--forest-deep);
+  margin: 0;
+}
+
+.hero__pour p {
+  margin-top: 0.7rem;
+  font-size: 1rem;
+  color: var(--charcoal-soft);
+}
+
+.hero__scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 1.8rem;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--charcoal-soft);
+}
+
+.hero__scroll-line {
+  width: 1px;
+  height: 44px;
+  background: linear-gradient(var(--mustard), transparent);
+  overflow: hidden;
+  position: relative;
+}
+
+.hero__scroll-line::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: var(--forest);
+  animation: scrollDrop 1.8s var(--ease-out) infinite;
+}
+
+@keyframes scrollDrop {
+  0% {
+    top: -50%;
+  }
+  100% {
+    top: 110%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__scroll-line::after {
+    animation: none;
+  }
+}
+
+/* --- Tablet: tighten the split, keep two columns ------------------------- */
+@media (max-width: 900px) {
+  .hero__editorial {
+    max-width: 26rem;
+  }
+  .hero__pour {
+    max-width: 18rem;
+  }
+}
+
+/* --- Mobile: stack — headline on top, real bottle below ---------------- */
+@media (max-width: 720px) {
+  .hero {
+    height: 300vh;
+  }
+  .hero__grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+    align-items: start;
+  }
+  .hero__editorial {
+    grid-column: 1;
+    grid-row: 1;
+    max-width: 100%;
+    padding-block: 5.25rem 0;
+  }
+  .hero__eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+  }
+  .hero__title {
+    font-size: clamp(2rem, 10vw, 2.6rem);
+    line-height: 1.02;
+  }
+  .hero__sub {
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+  .hero__sub,
+  .hero__actions {
+    margin-top: 1rem;
+  }
+  .hero__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+  .hero__actions .btn {
+    justify-content: center;
+    padding: 0.8rem 0.6rem;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+  .hero__claim {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    white-space: normal;
+  }
+  .hero__pour {
+    grid-column: 1;
+    grid-row: 3;
+    align-self: end;
+    justify-self: start;
+    text-align: left;
+    padding: 0 var(--gutter) 5.5rem;
+    max-width: 100%;
+  }
+  .hero__pour-mark {
+    margin-left: 0;
+  }
+}

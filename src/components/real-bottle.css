@@ -1,0 +1,101 @@
+/* --- Real product photo — the hero centerpiece -------------------------
+   The complete original photograph is shown untouched (cap, collar, amber
+   body, reflections, label, silhouette — full 887×1774). The white studio
+   backdrop is removed at runtime by `lib/cutout.ts` (border-connected
+   flood fill, so interior label whites and glass highlights survive); this
+   CSS only sizes the transparent result and grounds it with a shadow. */
+.hero__bottle {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+  justify-self: center;
+  z-index: 2;
+  pointer-events: none;
+  width: min(30vw, 400px);
+  min-width: 240px;
+  /* Tall photo: never exceed the viewport height — cap and base stay framed. */
+  max-height: 88vh;
+  max-height: 88dvh;
+  aspect-ratio: 887 / 1774;
+  will-change: transform;
+}
+
+.hero__bottle-mouse,
+.hero__bottle-float {
+  height: 100%;
+  will-change: transform;
+}
+
+.hero__bottle-float {
+  position: relative;
+}
+
+.hero__bottle-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* Interim (opaque photo): multiply melts white into ivory. No filter here —
+     any filter would isolate the blending and bring the white box back. */
+  mix-blend-mode: multiply;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Once the transparent cut-out swaps in, blending is off and a
+   silhouette-correct shadow applies. */
+.hero__bottle.is-cutout .hero__bottle-img {
+  mix-blend-mode: normal;
+  filter: drop-shadow(0 36px 44px rgba(28, 58, 43, 0.24));
+}
+
+/* Soft grounding shadow beneath the photographed base. */
+.hero__bottle-shadow {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: -1.2rem;
+  height: 2.2rem;
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(28, 58, 43, 0.32) 0%,
+    rgba(28, 58, 43, 0) 70%
+  );
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+/* --- Real-bottle responsive tuning (photo height, not canvas) ----------- */
+@media (max-width: 900px) {
+  .hero__bottle {
+    width: min(34vw, 320px);
+    min-width: 210px;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero__bottle {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: start;
+    justify-self: center;
+    /* Tall photo must share the 100dvh stage with the stacked copy above. */
+    width: min(40vw, 180px);
+    min-width: 0;
+    max-height: 32vh;
+    max-height: 32dvh;
+    margin-top: 0.85rem;
+  }
+  .hero__bottle-shadow {
+    bottom: -0.9rem;
+  }
+}
+
+/* Reduced motion: the GSAP float/parallax/drift never start (see
+   <RealBottle>), so the untouched photo renders as a composed still. */
+@media (prefers-reduced-motion: reduce) {
+  .hero__bottle,
+  .hero__bottle-mouse,
+  .hero__bottle-float {
+    will-change: auto;
+  }
+}
