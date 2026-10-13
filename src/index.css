@@ -4,15 +4,15 @@
    ============================================================ */
 
 :root {
-  --ivory: #f7f3ea;
-  --cream: #fbf8f1;
-  --forest: #1c3a2b;
-  --forest-deep: #132a1f;
-  --mustard: #c2912b;
-  --mustard-light: #e0b44f;
-  --charcoal: #22221f;
-  --charcoal-soft: #4a4a44;
-  --line: rgba(28, 58, 43, 0.14);
+  --ivory: #f7f4eb;
+  --cream: #fcfaf4;
+  --forest: #173d2b;
+  --forest-deep: #102a1f;
+  --mustard: #d9a52e;
+  --mustard-light: #e4b95a;
+  --charcoal: #262820;
+  --charcoal-soft: #4c4e46;
+  --line: rgba(23, 61, 43, 0.14);
 
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-serif: 'Fraunces', Georgia, 'Times New Roman', serif;

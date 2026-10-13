@@ -1,0 +1,8 @@
+# CIVIM GRAINS robots.txt
+# Public site: allow normal crawling. No private routes to disallow.
+# TODO(LAUNCH): Sitemap URL uses the SITE.siteUrl placeholder — confirm the
+# production domain (src/lib/site.ts) before launch and keep in sync.
+User-agent: *
+Allow: /
+
+Sitemap: https://www.civimgrains.com/sitemap.xml

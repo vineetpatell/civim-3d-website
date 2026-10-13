@@ -1,8 +1,10 @@
 import { useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap'
 import { heroProgress } from '../lib/heroProgress'
 import { useInView } from '../lib/useInView'
 import { useReducedMotion } from '../lib/useReducedMotion'
+import { whatsappUrl, GENERAL_ENQUIRY_MESSAGE } from '../lib/whatsapp'
 import { Scene } from '../three/Scene'
 import { RealBottle } from './RealBottle'
 
@@ -16,8 +18,10 @@ import { RealBottle } from './RealBottle'
  * studio light); ScrollTrigger scrubs the shared `heroProgress` (0→1) which
  * both layers read.
  *
- * The editorial column (eyebrow, headline, claim, copy, CTAs) is the
- * persistent brand message; a "pour" accent fades in mid-scroll.
+ * No floating overlay copy: the editorial column is the single message, so
+ * nothing can collide with the bottle mid-scroll. The sticky stage ends
+ * cleanly before the next section (see nav-hero.css: .hero has no negative
+ * margins; sections stack in normal flow).
  */
 export function Hero() {
   const root = useRef<HTMLDivElement>(null)
@@ -33,7 +37,6 @@ export function Hero() {
         // No scroll choreography: show the composed hero as a still frame.
         gsap.set('.hero__editorial > *', { autoAlpha: 1, y: 0 })
         gsap.set('.hero__bottle', { autoAlpha: 1, y: 0 })
-        gsap.set('.hero__pour', { autoAlpha: 0 })
         gsap.set('.hero__scroll-hint', { autoAlpha: 0 })
         heroProgress.value = 0.3
         return
@@ -62,7 +65,7 @@ export function Hero() {
       })
 
       // Drive the ambient narrative purely from scroll progress.
-      ScrollTrigger.create({
+      const progress = ScrollTrigger.create({
         trigger: rootEl,
         start: 'top top',
         end: 'bottom bottom',
@@ -72,7 +75,8 @@ export function Hero() {
         },
       })
 
-      // Overlay copy: a scrubbed timeline keyed to the same scroll span.
+      // Editorial column drifts up gently as the stage exits — small travel,
+      // stays readable, never leaves the sticky stage to overlap sections.
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: rootEl,
@@ -81,21 +85,16 @@ export function Hero() {
           scrub: true,
         },
       })
-
-      // Editorial column drifts up gently and softens as the pour takes over,
-      // but stays clearly readable (it carries the brand message + CTAs).
-      tl.to('.hero__editorial', { y: -24, opacity: 0.6, ease: 'none' }, 0)
+      tl.to('.hero__editorial', { y: -24, opacity: 0.85, ease: 'none' }, 0)
       tl.to('.hero__scroll-hint', { autoAlpha: 0, duration: 0.2 }, 0)
 
-      // "Kisaan Se Rasoi Tak" pour accent arrives mid-scroll beside the bottle.
-      tl.fromTo(
-        '.hero__pour',
-        { autoAlpha: 0, y: 30 },
-        { autoAlpha: 1, y: 0, duration: 0.4, ease: 'power2.out' },
-        0.5,
-      ).to('.hero__pour', { autoAlpha: 0, y: -20, duration: 0.25 }, 0.86)
+      return () => {
+        progress.kill()
+        tl.scrollTrigger?.kill()
+        tl.kill()
+      }
     },
-    { scope: root, dependencies: [reduced], revertOnUpdate: false },
+    { scope: root, dependencies: [reduced], revertOnUpdate: true },
   )
 
   return (
@@ -109,7 +108,7 @@ export function Hero() {
           <div className="shell hero__grid">
             <div className="hero__editorial">
               <span className="hero__eyebrow">
-                <span className="hero__eyebrow-dot" />
+                <span className="hero__eyebrow-dot" aria-hidden="true" />
                 Kisaan Se Rasoi Tak
               </span>
 
@@ -120,45 +119,44 @@ export function Hero() {
               </h1>
 
               <p className="hero__sub">
-                Stone-cold purity in every drop — our mustard oil carries the
-                warmth of the field straight to your kitchen.
+                100% Pure Mustard Oil for everyday Indian cooking — from the
+                field to your kitchen.
               </p>
 
               <div className="hero__actions">
-                <a className="btn btn--primary" href="#story">
-                  Our Story
+                <a
+                  className="btn btn--primary"
+                  href={whatsappUrl(GENERAL_ENQUIRY_MESSAGE)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Order on WhatsApp
                   <span className="btn__arrow" aria-hidden="true">
                     →
                   </span>
                 </a>
-                <a className="btn btn--ghost" href="#process">
-                  The Process
-                </a>
+                <Link className="btn btn--ghost" to="/shop">
+                  Explore Products
+                </Link>
               </div>
 
               <span className="hero__claim">
-                <span className="hero__claim-dot" />
+                <span className="hero__claim-dot" aria-hidden="true" />
                 100% Pure Mustard Oil
               </span>
             </div>
 
             {/* The real product photograph — the hero centerpiece. */}
             <RealBottle reduced={reduced} />
-
-            {/* Pour accent, appears beside the bottle mid-scroll. */}
-            <div className="hero__pour" aria-hidden="true">
-              <span className="hero__pour-mark" />
-              <h2>Kisaan Se Rasoi Tak.</h2>
-              <p>Poured golden — from harvest to kitchen.</p>
-            </div>
           </div>
         </div>
 
         <div className="hero__scroll-hint" aria-hidden="true">
-          <span>Scroll to pour</span>
+          <span>Scroll</span>
           <span className="hero__scroll-line" />
         </div>
       </div>
     </div>
   )
 }
+

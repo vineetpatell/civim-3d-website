@@ -79,10 +79,12 @@ export function RealBottle({ reduced }: { reduced: boolean }) {
 
       // Scroll-linked drift across the tall hero. NOTE: no `scope` is set on
       // this useGSAP call, so the '.hero' trigger resolves globally here.
+      // Kept small on purpose: the bottle must stay framed and never drift
+      // into the sections below — the sticky stage clips at its own bounds.
       const drift = gsap.to(scrollEl, {
-        y: -64,
-        rotation: -2.2,
-        scale: 1.035,
+        y: -36,
+        rotation: -1.2,
+        scale: 1.02,
         ease: 'none',
         scrollTrigger: {
           trigger: '.hero',

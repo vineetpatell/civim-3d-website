@@ -281,42 +281,6 @@
   box-shadow: 0 0 0 4px rgba(194, 145, 43, 0.16);
 }
 
-/* Pour accent — overlays the right column low, above the bottle photo. */
-.hero__pour {
-  grid-column: 2;
-  grid-row: 1;
-  align-self: end;
-  justify-self: end;
-  z-index: 3;
-  text-align: right;
-  padding-right: clamp(0.5rem, 3vw, 3rem);
-  padding-bottom: clamp(2rem, 8vh, 6rem);
-  opacity: 0;
-  max-width: 22rem;
-}
-
-.hero__pour-mark {
-  display: block;
-  width: 40px;
-  height: 2px;
-  background: var(--mustard);
-  margin-left: auto;
-  margin-bottom: 1rem;
-}
-
-.hero__pour h2 {
-  font-size: clamp(1.8rem, 3.4vw, 2.8rem);
-  line-height: 1.02;
-  color: var(--forest-deep);
-  margin: 0;
-}
-
-.hero__pour p {
-  margin-top: 0.7rem;
-  font-size: 1rem;
-  color: var(--charcoal-soft);
-}
-
 .hero__scroll-hint {
   position: absolute;
   left: 50%;
@@ -371,9 +335,6 @@
 @media (max-width: 900px) {
   .hero__editorial {
     max-width: 26rem;
-  }
-  .hero__pour {
-    max-width: 18rem;
   }
 }
 
