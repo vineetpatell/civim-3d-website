@@ -5,7 +5,12 @@
 # production domain (src/lib/site.ts) before launch and keep in sync.
 User-agent: *
 Allow: /
+
+# Public product and category pages must stay crawlable — nothing below
+# blocks /shop or any /shop/:slug URL.
 Disallow: /cart
 Disallow: /checkout
+
+# Legal & policy pages are public and indexable — deliberately NOT blocked.
 
 Sitemap: https://www.civimgrains.com/sitemap.xml

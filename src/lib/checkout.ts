@@ -31,6 +31,12 @@ export const CHECKOUT_CONFIG = {
   onlinePaymentReady: false,
   /** COD availability — enforced server-side once the backend exists. */
   codAvailable: true,
+  /**
+   * Delivery charge in ₹ once configured. null = no fixed charge; the
+   * checkout then shows no delivery fee and the customer is told delivery
+   * options are confirmed during order processing.
+   */
+  deliveryCharge: null as number | null,
 } as const
 
 export interface CustomerInfo {

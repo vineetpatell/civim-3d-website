@@ -51,8 +51,8 @@ export function Nav() {
             className="nav__logo"
             src={LOGO.src}
             alt="CIVIM GRAINS official logo"
-            width={512}
-            height={512}
+            width={LOGO.width}
+            height={LOGO.height}
             style={{ aspectRatio: LOGO.aspectRatio }}
           />
           <span className="nav__brand-text">

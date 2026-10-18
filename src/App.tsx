@@ -8,9 +8,13 @@ import { HomePage } from './pages/Home'
 import { AboutPage } from './pages/About'
 import { ShopPage } from './pages/Shop'
 import { ProductDetailPage } from './pages/ProductDetail'
-import { ContactPage } from './pages/Contact'
 import { CartPage } from './pages/CartPage'
 import { CheckoutPage } from './pages/CheckoutPage'
+import { ContactPage } from './pages/Contact'
+import { PrivacyPolicyPage } from './pages/PrivacyPolicy'
+import { TermsPage } from './pages/Terms'
+import { ReturnRefundPage } from './pages/ReturnRefund'
+import { DataProtectionPage } from './pages/DataProtection'
 import { ScrollTrigger } from './lib/gsap'
 import './components/nav-hero.css'
 import './components/real-bottle.css'
@@ -19,6 +23,7 @@ import './components/pages.css'
 import './components/store.css'
 import './components/home.css'
 import './components/commerce.css'
+import './components/legal.css'
 
 /**
  * Multi-page app: Home / About / Shop / Contact with clean URLs.
@@ -53,6 +58,13 @@ export default function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/contact" element={<ContactPage />} />
+
+          {/* --- Legal & policy pages (public, indexable) ------------------ */}
+          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+          <Route path="/terms-and-conditions" element={<TermsPage />} />
+          <Route path="/return-refund-policy" element={<ReturnRefundPage />} />
+          <Route path="/data-protection" element={<DataProtectionPage />} />
+
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

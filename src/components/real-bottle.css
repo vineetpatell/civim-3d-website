@@ -72,21 +72,37 @@
   }
 }
 
-@media (max-width: 720px) {
+/*
+ * Mobile (≤767px): the bottle becomes the FIRST element of the hero stack.
+ *
+ * Placement is set HERE (not in nav-hero.css) on purpose: this file is imported
+ * AFTER nav-hero.css, so at equal specificity these rules win the cascade and
+ * override the base `.hero__bottle { grid-column: 2 }` above — pinning the
+ * bottle to row 1 / column 1, top of the single-column stack.
+ *
+ * Sizing is driven by HEIGHT so the complete 887×1774 photograph — cap to
+ * base — stays framed and its aspect ratio is never distorted. `width: auto`
+ * lets `aspect-ratio` derive the width from that height, and the existing
+ * `.hero__bottle-img { object-fit: contain }` guarantees the full bottle fits.
+ *
+ * clamp(280px, 48dvh, 420px) keeps the bottle prominent across short phones
+ * (375×667 ≈ 320px) through tall ones (430×932 clamps to 420px) without
+ * leaving excessive empty space.
+ */
+@media (max-width: 767px) {
   .hero__bottle {
     grid-column: 1;
-    grid-row: 2;
-    align-self: start;
+    grid-row: 1;
+    align-self: center;
     justify-self: center;
-    /* Tall photo must share the 100dvh stage with the stacked copy above. */
-    width: min(40vw, 180px);
+    width: auto;
+    height: clamp(280px, 48dvh, 420px);
     min-width: 0;
-    max-height: 32vh;
-    max-height: 32dvh;
-    margin-top: 0.85rem;
+    /* Compact: no dead space above or below the bottle. */
+    margin-top: 0;
   }
   .hero__bottle-shadow {
-    bottom: -0.9rem;
+    bottom: -0.75rem;
   }
 }
 

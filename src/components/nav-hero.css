@@ -338,65 +338,105 @@
   }
 }
 
-/* --- Mobile: stack — headline on top, real bottle below ---------------- */
-@media (max-width: 720px) {
+/* --- Mobile (≤767px): bottle first, editorial copy below --------------
+   Desktop/tablet above 767px is untouched.
+
+   Required mobile reading order:
+     1 product bottle image (top, full bottle, aspect-ratio preserved)
+     2 eyebrow  "Kisaan Se Rasoi Tak"
+     3 headline "Pure Goodness, Green & Clean."
+     4 description
+     5 CTAs     Order on WhatsApp · Explore Products
+     6 claim    "100% Pure Mustard Oil"
+
+   The bottle and the editorial column are two grid children, so placing them
+   in different `grid-row`s reorders them without duplicating any markup.
+
+   The sticky, clipped 100dvh stage is RELEASED on mobile: a stacked hero is
+   taller than a short phone's viewport, so a fixed clipped stage would hide
+   the CTAs and product label with no way to scroll to them. The stage becomes
+   a normal in-flow block that grows with its content, so every element stays
+   reachable. The scroll hint is removed here — it would collide with the
+   stacked copy. */
+@media (max-width: 767px) {
   .hero {
-    height: 300vh;
+    height: auto;
+  }
+  .hero__stage {
+    position: relative;
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+  /* Back in flow (was absolute) so it — not the fixed stage — drives height. */
+  .hero__overlay {
+    position: relative;
+    inset: auto;
   }
   .hero__grid {
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto 1fr;
-    align-items: start;
+    /* Two natural-height rows (bottle, then editorial): nothing can clip. */
+    grid-template-rows: auto auto;
+    align-content: start;
+    height: auto;
+    /* Clear the fixed nav (~66px) so the bottle's cap sits fully below it. */
+    padding-top: 5rem;
+    padding-bottom: 3rem;
+    row-gap: 1.25rem;
   }
+
+  /* 1 — the bottle's grid placement + sizing live in real-bottle.css (the file
+     that owns `.hero__bottle` and is imported after this one) so the cascade
+     resolves to a single source of truth and beats the base `grid-column: 2`. */
+
+  /* 2–6 — the editorial column follows, already in the required order. */
   .hero__editorial {
     grid-column: 1;
-    grid-row: 1;
+    grid-row: 2;
+    align-self: start;
     max-width: 100%;
-    padding-block: 5.25rem 0;
+    padding-block: 0;
+    text-align: left;
   }
   .hero__eyebrow {
     font-size: 0.7rem;
     letter-spacing: 0.18em;
+    margin-bottom: 0.9rem;
   }
   .hero__title {
-    font-size: clamp(2rem, 10vw, 2.6rem);
+    font-size: clamp(2rem, 9.5vw, 2.6rem);
     line-height: 1.02;
   }
   .hero__sub {
     font-size: 0.92rem;
     line-height: 1.5;
+    max-width: 34ch;
   }
   .hero__sub,
   .hero__actions {
     margin-top: 1rem;
   }
+  /* Stack the CTAs full width: comfortable ~48px tap targets, no overflow. */
   .hero__actions {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 0.6rem;
   }
   .hero__actions .btn {
     justify-content: center;
-    padding: 0.8rem 0.6rem;
-    font-size: 0.85rem;
+    min-height: 48px;
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
     white-space: nowrap;
   }
   .hero__claim {
-    margin-top: 1rem;
+    margin-top: 1.1rem;
     font-size: 0.75rem;
     letter-spacing: 0.12em;
     white-space: normal;
   }
-  .hero__pour {
-    grid-column: 1;
-    grid-row: 3;
-    align-self: end;
-    justify-self: start;
-    text-align: left;
-    padding: 0 var(--gutter) 5.5rem;
-    max-width: 100%;
-  }
-  .hero__pour-mark {
-    margin-left: 0;
+  /* Decorative scroll indicator would overlap the stacked content. */
+  .hero__scroll-hint {
+    display: none;
   }
 }

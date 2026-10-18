@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Reveal } from '../components/Reveal'
 import { Faq } from '../components/Faq'
 import { ProductCard } from '../components/ProductCard'

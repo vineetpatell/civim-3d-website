@@ -84,19 +84,26 @@ export const PRODUCTS: Product[] = [
     name: '100% Pure Mustard Oil',
     category: 'Mustard Oil',
     description:
-      'Our signature mustard oil for everyday Indian cooking — tadka, sabzi, parathas and pickles. Carries the “100% Pure” claim as printed on the pack.',
-    detail: 'Pack label (as printed): Cold Pressed',
+      'CIVIM GRAINS Mustard Oil brings a familiar ingredient to everyday Indian cooking. Use it in suitable traditional recipes, including sabzis, curries, pickles and other dishes where mustard oil is preferred. The product label identifies it as mustard oil and states “Cold Pressed”. Please refer to the actual product label for the complete ingredient, storage and other product information.',
+    detail: 'Pack label (as printed): mustard oil, “Cold Pressed”',
     image: '/bottle-front.png',
     imageAlt:
       'CIVIM Grains Cold Pressed Mustard Oil bottle — red cap, yellow collar, amber oil and front label',
     featured: true,
-    price: null,
+    price: 280,
+    variants: [
+      { id: '1l', label: '1 litre', price: 280 },
+      { id: '2l', label: '2 litres', price: 560 },
+      { id: '3l', label: '3 litres', price: 840 },
+    ],
     stock: 'unknown',
     specs: [
-      { label: 'Product', value: '100% Pure Mustard Oil' },
+      { label: 'Product', value: 'CIVIM GRAINS Mustard Oil (sold as “100% Pure Mustard Oil”)' },
       { label: 'Label claim', value: 'Cold Pressed (as printed on the pack)' },
-      { label: 'Pack sizes', value: 'To be confirmed' },
-      { label: 'Price', value: 'To be confirmed' },
+      { label: 'Pack sizes', value: '1 litre · 2 litres · 3 litres' },
+      { label: 'Price', value: '₹280 per 1 litre' },
+      { label: 'Brand', value: 'CIVIM GRAINS' },
+      { label: 'Ingredients, nutrition & storage', value: 'See the physical pack label — not reproduced here' },
     ],
     faqs: [
       {
@@ -104,12 +111,20 @@ export const PRODUCTS: Product[] = [
         a: 'Cold Pressed is the claim printed on our pack and generally refers to oil drawn without added high heat. For batch or process details, contact us with the batch code from your pack.',
       },
       {
-        q: 'What pack sizes are available?',
-        a: 'Pack sizes and prices are being confirmed for online purchase. Please contact us for the current list before ordering.',
+        q: 'What pack sizes and prices are available online?',
+        a: '1 litre = ₹280, 2 litres = ₹560 and 3 litres = ₹840. Contact us to confirm current availability before ordering.',
+      },
+      {
+        q: 'What can I cook with it?',
+        a: 'Mustard oil is traditionally used in sabzis, curries, pickles and other dishes where its flavour is preferred. Please refer to the actual product label for the definitive information about the product.',
       },
       {
         q: 'How should I store the oil?',
-        a: 'Store in a cool, dry place away from direct sunlight and keep the cap tightly closed after use, as you would with any cooking oil.',
+        a: 'We do not reproduce storage instructions here because they must match your pack label exactly. Please follow the storage instructions printed on the label. As a general practice for any cooking oil, keep it away from direct sunlight with the cap closed tightly after use.',
+      },
+      {
+        q: 'Is it organic or chemical-free?',
+        a: 'We do not make those claims, because they are not verified on the label for this product. The label identifies the product as mustard oil and states “Cold Pressed”.',
       },
     ],
   },

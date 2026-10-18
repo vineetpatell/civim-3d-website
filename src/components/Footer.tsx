@@ -50,9 +50,19 @@ const SOCIAL_DEFS: SocialDef[] = [
 
 /**
  * Footer: curved upper edge, official logo, brand blurb, navigation, shop
- * categories, contact, FAQ + legal links, social icons (real URLs only —
+ * categories, contact, legal policy links, social icons (real URLs only —
  * clearly marked placeholders otherwise) and the NES credit link.
+ *
+ * Compact forest-green treatment: tight gaps, balanced columns, no horizontal
+ * overflow. The curved edge is preserved exactly as approved.
  */
+const LEGAL_LINKS: { to: string; label: string }[] = [
+  { to: '/privacy-policy', label: 'Privacy Policy' },
+  { to: '/terms-and-conditions', label: 'Terms & Conditions' },
+  { to: '/return-refund-policy', label: 'Return & Refund Policy' },
+  { to: '/data-protection', label: 'Data Protection' },
+]
+
 export function Footer() {
   const ref = useRef<HTMLElement>(null)
 
@@ -90,8 +100,8 @@ export function Footer() {
               className="footer__logo"
               src={LOGO.src}
               alt="CIVIM GRAINS official logo"
-              width={512}
-              height={512}
+              width={LOGO.width}
+              height={LOGO.height}
               style={{ aspectRatio: LOGO.aspectRatio }}
               data-reveal
             />
@@ -181,10 +191,17 @@ export function Footer() {
             <Link to="/contact#faq" data-reveal>
               FAQ &amp; Support
             </Link>
-            <Link to="/contact" data-reveal>
-              Privacy &amp; Terms
-            </Link>
           </div>
+
+          {/* --- Legal & policies (dedicated, directly accessible pages) --- */}
+          <nav className="footer__links footer__links--legal" aria-label="Policies">
+            <span className="footer__links-title">Policies</span>
+            {LEGAL_LINKS.map((l) => (
+              <Link key={l.to} to={l.to} data-reveal>
+                {l.label}
+              </Link>
+            ))}
+          </nav>
         </div>
 
         <div className="footer__bottom">

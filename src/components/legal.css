@@ -1,0 +1,189 @@
+/* ============================================================
+   Legal & policy pages — compact, readable, honest.
+   Matches the editorial ivory / forest / mustard system.
+   ============================================================ */
+
+.legal {
+  max-width: 860px;
+}
+
+.legal__updated {
+  margin-top: 1.1rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: var(--charcoal-soft);
+}
+
+/* Review banner shown on every policy page */
+.legal__draft {
+  margin-bottom: clamp(1.6rem, 3vw, 2.4rem);
+  padding: 1.1rem 1.25rem;
+  border: 1px solid rgba(217, 165, 46, 0.55);
+  border-left: 3px solid var(--mustard);
+  background: rgba(217, 165, 46, 0.1);
+}
+
+.legal__draft strong {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-family: var(--font-sans);
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--forest-deep);
+}
+
+.legal__draft p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--charcoal-soft);
+}
+
+.legal__draft--strong {
+  border-color: #a03427;
+  border-left-color: #a03427;
+  background: rgba(160, 52, 39, 0.07);
+}
+
+.legal__draft--strong strong {
+  color: #a03427;
+}
+
+/* Each titled policy block */
+.legal__block {
+  padding-block: clamp(1.4rem, 3vw, 2rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.legal__block:last-of-type {
+  border-bottom: 0;
+}
+
+.legal__block h2 {
+  font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+  margin-bottom: 0.9rem;
+}
+
+.legal__block h3 {
+  font-size: 1.02rem;
+  margin-top: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--forest);
+}
+
+.legal__block p,
+.legal__block li {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--charcoal-soft);
+}
+
+.legal__block p + p {
+  margin-top: 0.85rem;
+}
+
+.legal__block ul,
+.legal__block ol {
+  margin: 0.85rem 0 0;
+  padding-left: 1.3rem;
+}
+
+.legal__block li + li {
+  margin-top: 0.45rem;
+}
+
+.legal__block a {
+  color: var(--forest);
+  text-decoration: underline;
+  text-decoration-color: rgba(23, 61, 43, 0.35);
+  text-underline-offset: 2px;
+}
+
+.legal__block a:hover,
+.legal__block a:focus-visible {
+  text-decoration-color: var(--mustard);
+}
+
+/* "To be confirmed" marker — unmistakable but not alarming */
+.legal__confirm {
+  padding: 0.1rem 0.4rem;
+  border-radius: 2px;
+  background: rgba(217, 165, 46, 0.28);
+  color: var(--forest-deep);
+  font-weight: 600;
+  font-style: normal;
+}
+
+.legal__checklist {
+  list-style: none;
+  padding-left: 0;
+}
+
+.legal__checklist li {
+  padding: 0.7rem 0.9rem;
+  border: 1px dashed var(--line);
+  background: var(--cream);
+}
+
+/* Data-collection table on the Data Protection page */
+.legal__table {
+  width: 100%;
+  margin-top: 1rem;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.legal__table th,
+.legal__table td {
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+.legal__table thead th {
+  background: var(--forest);
+  color: var(--cream);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.legal__table tbody tr:nth-child(even) {
+  background: var(--cream);
+}
+
+/* Cross-links between the four policy pages */
+.legal__siblings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.4rem;
+  margin-top: clamp(1.6rem, 3vw, 2.4rem);
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.86rem;
+}
+
+.legal__siblings a {
+  color: var(--forest);
+  border-bottom: 1px solid transparent;
+}
+
+.legal__siblings a:hover,
+.legal__siblings a:focus-visible {
+  border-bottom-color: var(--mustard);
+}
+
+@media (max-width: 640px) {
+  .legal__table {
+    font-size: 0.82rem;
+  }
+  .legal__table th,
+  .legal__table td {
+    padding: 0.5rem 0.55rem;
+  }
+}

@@ -307,10 +307,10 @@
 
 /* --- Footer additions (logo, socials, credit) ---------------------- */
 .footer__logo {
-  width: 72px;
-  height: 72px;
+  width: 60px;
+  height: 60px;
   object-fit: contain;
-  margin-bottom: 1rem;
+  margin-bottom: 0.9rem;
 }
 
 .footer__socials {

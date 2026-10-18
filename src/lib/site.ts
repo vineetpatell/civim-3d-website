@@ -24,14 +24,23 @@ export const SITE = {
 
 /**
  * Official brand logo.
- * Drop the supplied official logo file (as attached in the brief) into
- * `public/logo.png` — the site references this exact file in the header and
- * footer. Never substitute a redrawn/text-only version.
+ *
+ * Asset: `public/civim-grains-logo.png` — 1024×1024, 32-bit with a TRANSPARENT
+ * background. The transparency is essential: this logo sits on the dark forest
+ * footer and over the scrolled header, so an opaque white-background logo would
+ * show a visible box. Do not replace it with a flattened/JPEG version.
+ *
+ * If the brand supplies a different official file, replace
+ * `public/civim-grains-logo.png` (keep the same filename) and update `width`
+ * and `height` below to match its real intrinsic size.
  */
 export const LOGO = {
-  src: '/logo.png',
+  src: '/civim-grains-logo.png',
   /** Intrinsic ratio of the supplied logo (square, 1024×1024). */
   aspectRatio: '1 / 1',
+  /** Intrinsic pixel size — used for width/height to avoid layout shift. */
+  width: 1024,
+  height: 1024,
 } as const
 
 export const CONTACT = {
