@@ -60,9 +60,17 @@ export function ProductCard({ product }: { product: Product }) {
           >
             {justAdded ? 'Added ✓' : 'Add to Cart'}
           </button>
-          <Link className="btn btn--ghost btn--sm" to={`/shop/${product.slug}`}>
-            View Details
-          </Link>
+          <button
+            type="button"
+            className="btn btn--ghost btn--sm"
+            onClick={() => {
+              add(product.slug)
+              window.location.href = `/shop/${product.slug}`
+            }}
+            aria-label={`Buy ${product.name} now`}
+          >
+            Buy Now
+          </button>
         </div>
         {!product.image && (
           <span className="sr-only">
