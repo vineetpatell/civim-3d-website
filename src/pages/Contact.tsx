@@ -239,6 +239,27 @@ export function ContactPage() {
         </Reveal>
       </section>
 
+      <section className="section page-section page-section--tint" id="business-enquiries" aria-labelledby="business-enquiries-h">
+        <Reveal className="shell">
+          <h2 id="business-enquiries-h" data-reveal>
+            Business & Wholesale Enquiries
+          </h2>
+          <p data-reveal>
+            CIVIM GRAINS serves both individual households and business customers.
+            Retailers, grocery stores, distributors and trade buyers can enquire about
+            available products and supply requirements. Restaurants, food businesses
+            and other commercial buyers are welcome to get in touch about product
+            availability, pack sizes, pricing and minimum order quantities.
+          </p>
+          <p data-reveal>
+            <a href="https://wa.me/918450912454?text=Business enquiry:" className="btn btn--gold" target="_blank" rel="noopener noreferrer">
+              Enquire for Business Supply
+            </a>
+            — or call {CONTACT.phoneDisplay} and email {CONTACT.email}
+          </p>
+        </Reveal>
+      </section>
+
       <section className="section page-section page-section--tint" id="faq" aria-labelledby="contact-faq-h">
         <Reveal className="shell faq-wrap">
           <span className="eyebrow" data-reveal>

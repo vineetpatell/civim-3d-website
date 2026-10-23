@@ -96,7 +96,17 @@
 }
 
 .staple-block .carousel__item {
-  width: min(78vw, 280px);
+  width: min(95vw, 200px);
+  margin-right: 20px;
+}
+.staple-block .carousel__item:last-child {
+  margin-right: 0;
+}
+.staple-block .carousel__item img,
+.staple-block .carousel__item picture {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 .staple-block .product-card {
@@ -219,6 +229,21 @@
   .steps-grid {
     grid-template-columns: 1fr 1fr;
   }
+}
+
+.stock-hero {
+  background: center/cover no-repeat;
+  height: 200px;
+}
+
+.stock-medium {
+  background: center/cover no-repeat;
+  height: 120px;
+}
+
+.stock-small {
+  background: center/cover no-repeat;
+  height: 100px;
 }
 
 @media (max-width: 640px) {

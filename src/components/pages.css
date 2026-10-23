@@ -29,6 +29,285 @@
   padding-bottom: calc(var(--section-y) * 0.6);
 }
 
+/* --- PWA Install Prompt Banner ------------------------------------------ */
+.pwa-install-banner {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(28, 58, 43, 0.85);
+  backdrop-filter: blur(6px);
+}
+
+.pwa-install-content {
+  background: #f7f4eb;
+  color: #1c3a2b;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+.pwa-install-content strong {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  font-family: 'Fraunces', serif;
+}
+
+.pwa-install-content p {
+  font-size: 0.95rem;
+  margin: 0 0 1rem;
+  line-height: 1.5;
+}
+
+.pwa-install-content .pwa-install-button {
+  background: #1c3a2b;
+  color: #f7f4eb;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.pwa-install-content .pwa-install-button:hover {
+  background: #2d5a3e;
+}
+
+.pwa-install-content .pwa-install-dismiss {
+  background: transparent;
+  color: #6b7a70;
+  border: 1px solid #c9d1ca;
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.pwa-install-content .pwa-install-dismiss:hover {
+  background: #eef2f0;
+}
+
+/* Mobile-first: smaller text on narrow screens */
+@media (max-width: 480px) {
+  .pwa-install-content strong {
+    font-size: 1rem;
+  }
+  .pwa-install-content p {
+    font-size: 0.9rem;
+  }
+}
+
+/* ============================================================
+   Mobile top bar — compact header on small screens
+   ============================================================ */
+.mobile-top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  z-index: 1100;
+  background: #f7f4eb;
+  border-bottom: 1px solid #d9e0d9;
+  display: none; /* desktop hidden */
+}
+
+@media (max-width: 767px) {
+  .mobile-top-bar {
+    display: block;
+    padding: 0 env(safe-area-inset-top, 0);
+  }
+
+  .mobile-top-bar__inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+  }
+
+  .mobile-top-bar__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: #1c3a2b;
+  }
+
+  .mobile-top-bar__logo img {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+  }
+
+  .mobile-top-bar__wordmark {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .mobile-top-bar__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .mobile-top-bar__cart {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    color: #1c3a2b;
+    text-decoration: none;
+  }
+
+  .mobile-top-bar__cart:hover {
+    background: #eef2f0;
+  }
+
+  .mobile-top-bar__badge {
+    position: absolute;
+    top: 6px;
+    right: 4px;
+    min-width: 16px;
+    height: 16px;
+    background: #b83a1a;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+  }
+}
+
+/* ============================================================
+   Mobile bottom navigation — app-like tab bar
+   ============================================================ */
+.mobile-bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  height: 70px;
+  display: none; /* desktop hidden */
+  background: #f7f4eb;
+  border-top: 1px solid #d9e0d9;
+}
+
+@media (max-width: 767px) {
+  .mobile-bottom-nav {
+    display: flex;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+    padding-top: 6px;
+  }
+
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    flex: 1;
+    color: #6b7a70;
+    text-decoration: none;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding-top: 4px;
+  }
+
+  .mobile-nav-item.is-active {
+    color: #1c3a2b;
+  }
+
+  .mobile-nav-item svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .mobile-nav-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    min-width: 16px;
+    height: 16px;
+    background: #b83a1a;
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+  }
+
+  /* Page bottom padding so content isn't hidden behind the nav */
+  body {
+    padding-bottom: 80px;
+  }
+}
+
+/* ============================================================
+   Mobile category shortcuts — horizontal chip row
+   ============================================================ */
+.mobile-category-shortcuts {
+  padding: 2rem 0 1rem;
+}
+
+@media (max-width: 767px) {
+  .mobile-category-shortcuts {
+    padding: 1.5rem 0 1rem;
+  }
+
+  .shortcuts-list {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.75rem;
+    scrollbar-width: none; /* Firefox */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .shortcuts-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .shortcut-chip {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    padding: 0.55rem 1rem;
+    background: #f0f4f1;
+    border: 1px solid #d9e0d9;
+    border-radius: 999px;
+    color: #1c3a2b;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .shortcut-chip:hover {
+    background: #e3eae6;
+    border-color: #1c3a2b;
+  }
+}
+
 /* --- Breadcrumb ------------------------------------------------------- */
 .breadcrumb {
   margin-bottom: 1.1rem;
@@ -831,7 +1110,21 @@
   border: 0;
 }
 
-/* Nav additions: active link, burger, mobile menu. */
+/* Stock imagery: mustard fields, seeds, farming */
+.stock-hero {
+  background: center/cover no-repeat;
+  height: 200px;
+}
+
+.stock-medium {
+  background: center/cover no-repeat;
+  height: 120px;
+}
+
+.stock-small {
+  background: center/cover no-repeat;
+  height: 100px;
+}
 .nav__right {
   display: flex;
   align-items: center;

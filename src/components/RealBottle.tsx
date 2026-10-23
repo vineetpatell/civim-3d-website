@@ -5,11 +5,13 @@ import { cutoutBottle } from '../lib/cutout'
 /**
  * Real CIVIM product photo as the hero visual.
  *
- * Uses the complete original photograph (`/bottle-front.png`, 887×1774,
- * opaque) — full silhouette, red cap, yellow collar, amber body, reflections
- * and label artwork preserved exactly. No cropping of cap/base, no redraw.
+ * Front (`/bottle-front.png`, 887×1774) and back (`/bottle-back.png`)
+ * product photos crossfade with a subtle scale/rotation illusion. Only one
+ * bottle image is ever fully visible at a time — the flip cycles between the
+ * two labels so both faces of the bottle are seen without showing two bottles
+ * simultaneously.
  *
- * The photo renders immediately; once `lib/cutout.ts` finishes its
+ * The front photo renders immediately; once `lib/cutout.ts` finishes its
  * border-connected flood fill the src upgrades to the transparent version,
  * so glass edges, highlights and amber reflections survive untouched.
  *
@@ -17,6 +19,7 @@ import { cutoutBottle } from '../lib/cutout'
  *   outer (.hero__bottle)      — scroll-linked drift (GSAP scrub)
  *   middle (.hero__bottle-mouse) — mouse parallax (quickTo)
  *   inner (.hero__bottle-float)  — gentle idle float (yoyo)
+ *   images (.hero__bottle-images) — front↔back crossfade (every 7s)
  */
 export function RealBottle({ reduced }: { reduced: boolean }) {
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -26,6 +29,7 @@ export function RealBottle({ reduced }: { reduced: boolean }) {
   // The wrapper reserves the exact aspect-ratio box so layout never shifts.
   const [src, setSrc] = useState<string>('/bottle-front.png')
   const [isCutout, setIsCutout] = useState(false)
+
   useEffect(() => {
     let live = true
     cutoutBottle()
@@ -77,10 +81,8 @@ export function RealBottle({ reduced }: { reduced: boolean }) {
       }
       window.addEventListener('pointermove', onMove, { passive: true })
 
-      // Scroll-linked drift across the tall hero. NOTE: no `scope` is set on
-      // this useGSAP call, so the '.hero' trigger resolves globally here.
-      // Kept small on purpose: the bottle must stay framed and never drift
-      // into the sections below — the sticky stage clips at its own bounds.
+      // Scroll-linked drift across the hero. The bottle stays framed inside
+      // the sticky stage — it never drifts into sections below.
       const drift = gsap.to(scrollEl, {
         y: -36,
         rotation: -1.2,
@@ -94,6 +96,23 @@ export function RealBottle({ reduced }: { reduced: boolean }) {
         },
       })
 
+      // Front ↔ back crossfade timeline — runs indefinitely with holds between
+      // fades so each label is readable for several seconds. Uses autoAlpha so
+      // the inactive image also gets `visibility: hidden` (no paint, no flash).
+      const frontImg = document.querySelector('.hero__bottle-image--front')
+      const backImg = document.querySelector('.hero__bottle-image--back')
+      if (frontImg && backImg) {
+        gsap.set(backImg, { autoAlpha: 0 })
+        const flip = gsap.timeline({ repeat: -1 })
+        flip
+          .to(frontImg, { autoAlpha: 0, duration: 0.8, ease: 'power2.inOut' }, 0)
+          .to(backImg, { autoAlpha: 1, duration: 0.8, ease: 'power2.inOut' }, 0)
+          .to({}, { duration: 6 }) // hold back label visible
+          .to(frontImg, { autoAlpha: 1, duration: 0.8, ease: 'power2.inOut' })
+          .to(backImg, { autoAlpha: 0, duration: 0.8, ease: 'power2.inOut' })
+          .to({}, { duration: 6 }) // hold front label visible
+      }
+
       return () => {
         float.kill()
         drift.scrollTrigger?.kill()
@@ -104,25 +123,39 @@ export function RealBottle({ reduced }: { reduced: boolean }) {
     { dependencies: [reduced] },
   )
 
+  const frontSrc = isCutout ? src : '/bottle-front.png'
+  const backSrc = '/bottle-back.png'
+
   return (
     <div
       ref={scrollRef}
       className={`hero__bottle${isCutout ? ' is-cutout' : ''}`}
       role="img"
-      aria-label="CIVIM Grains Cold Pressed Mustard Oil — real front-facing product bottle"
+      aria-label={`CIVIM Grains Cold Pressed Mustard Oil — product bottle`}
     >
       <div ref={mouseRef} className="hero__bottle-mouse">
         <div ref={floatRef} className="hero__bottle-float">
-          <img
-            src={src}
-            alt="CIVIM Grains Cold Pressed Mustard Oil bottle — red cap, yellow collar, amber oil and front label"
-            className="hero__bottle-img"
-            width={887}
-            height={1774}
-            decoding="async"
-            fetchPriority="high"
-            draggable={false}
-          />
+          <div className="hero__bottle-images">
+            <img
+              src={frontSrc}
+              alt="CIVIM Grains Cold Pressed Mustard Oil bottle — front label"
+              className={`hero__bottle-image hero__bottle-image--front`}
+              width={887}
+              height={1774}
+              decoding="async"
+              fetchPriority="high"
+              draggable={false}
+            />
+            <img
+              src={backSrc}
+              alt="CIVIM Grains Cold Pressed Mustard Oil bottle — back label"
+              className={`hero__bottle-image hero__bottle-image--back`}
+              width={887}
+              height={1774}
+              decoding="async"
+              draggable={false}
+            />
+          </div>
           <div className="hero__bottle-shadow" aria-hidden="true" />
         </div>
       </div>

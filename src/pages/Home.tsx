@@ -4,6 +4,7 @@ import { Reveal } from '../components/Reveal'
 import { Faq } from '../components/Faq'
 import { TrustStrip } from '../components/TrustStrip'
 import { CategoryShowcase } from '../components/CategoryShowcase'
+import { MobileCategoryShortcuts } from '../components/MobileCategoryShortcuts'
 import { FeaturedRow } from '../components/FeaturedRow'
 import { CampaignBanner } from '../components/CampaignBanner'
 import { StapleShop } from '../components/StapleShop'
@@ -48,9 +49,20 @@ export function HomePage() {
         path="/"
         image="/bottle-front.png"
       />
+{/* Stock imagery: mustard fields, seeds, farming — free Unsplash licenses */}
+      <section className="section page-section page-section--tint">
+        <div className="shell" style={{ maxWidth: 1200, margin: 0 }}>
+          <div className="stock-hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1509395176807-b4797d686d4f?w=1200&q=80')" }}></div>
+          <div className="stock-medium" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1531903024232-37e0c44d217d?w=800&q=80')" }}></div>
+          <div className="stock-small" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1495662161232-f9b6a2e2550d?w=800&q=80')" }}></div>
+        </div>
+      </section>
 
       {/* APPROVED HERO — do not modify this component or its styles. */}
       <Hero />
+
+      {/* Mobile-only category shortcuts row */}
+      <MobileCategoryShortcuts />
 
       <TrustStrip />
       <CategoryShowcase />
