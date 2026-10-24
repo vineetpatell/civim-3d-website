@@ -231,19 +231,32 @@
   }
 }
 
-.stock-hero {
-  background: center/cover no-repeat;
-  height: 200px;
+/* Stock imagery removed from desktop to eliminate white space above hero. */
+/* Stock images only visible on mobile for visual context. */
+@media (min-width: 960px) {
+  .stock-hero,
+  .stock-medium,
+  .stock-small {
+    display: none;
+  }
 }
 
-.stock-medium {
-  background: center/cover no-repeat;
-  height: 120px;
-}
+/* Mobile stock images for visual context */
+@media (max-width: 959.98px) {
+  .stock-hero {
+    background: center/cover no-repeat;
+    height: 100px;
+  }
 
-.stock-small {
-  background: center/cover no-repeat;
-  height: 100px;
+  .stock-medium {
+    background: center/cover no-repeat;
+    height: 60px;
+  }
+
+  .stock-small {
+    background: center/cover no-repeat;
+    height: 40px;
+  }
 }
 
 @media (max-width: 640px) {

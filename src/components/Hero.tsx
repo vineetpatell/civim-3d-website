@@ -1,50 +1,35 @@
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap'
+import { gsap, useGSAP } from '../lib/gsap'
 import { heroProgress } from '../lib/heroProgress'
 import { useInView } from '../lib/useInView'
 import { useReducedMotion } from '../lib/useReducedMotion'
 import { whatsappUrl, GENERAL_ENQUIRY_MESSAGE } from '../lib/whatsapp'
 import { Scene } from '../three/Scene'
-import { RealBottle } from './RealBottle'
+import { BottleStager } from './BottleStager'
 
-/**
- * Cinematic hero: a tall scroll container drives a sticky stage.
- *
- * The product is the untouched original photograph (`/bottle-front.png`)
- * rendered by <RealBottle> — full silhouette, red cap, yellow collar, amber
- * body, reflections and label preserved exactly, animated as a single unit.
- * The WebGL canvas behind it renders only drifting harvest dust (plus warm
- * studio light); ScrollTrigger scrubs the shared `heroProgress` (0→1) which
- * both layers read.
- *
- * No floating overlay copy: the editorial column is the single message, so
- * nothing can collide with the bottle mid-scroll. The sticky stage ends
- * cleanly before the next section (see nav-hero.css: .hero has no negative
- * margins; sections stack in normal flow).
- */
 export function Hero() {
   const root = useRef<HTMLDivElement>(null)
+  const stage = useRef<HTMLDivElement>(null)
   const inView = useInView(root, { threshold: 0 })
   const reduced = useReducedMotion()
 
   useGSAP(
     () => {
       const rootEl = root.current
-      if (!rootEl) return
+      const stageEl = stage.current
+      if (!rootEl || !stageEl) return
 
       if (reduced) {
-        // No scroll choreography: show the composed hero as a still frame.
         gsap.set('.hero__editorial > *', { autoAlpha: 1, y: 0 })
-        gsap.set('.hero__bottle', { autoAlpha: 1, y: 0 })
+        gsap.set('.bottle-stage', { autoAlpha: 1, y: 0 })
         gsap.set('.hero__scroll-hint', { autoAlpha: 0 })
+        gsap.set('.hero__story-line--side, .hero__story-line--back', { autoAlpha: 0 })
+        gsap.set('.hero__story-line--front', { autoAlpha: 1 })
         heroProgress.value = 0.3
         return
       }
 
-      // Entrance: `immediateRender: false` so the pre-mount CSS state (fully
-      // visible) stays until the tween actually starts — no frozen FOUC if
-      // GSAP ticks late (e.g. headless/virtual-time environments).
       gsap.from('.hero__editorial > *', {
         y: 28,
         autoAlpha: 0,
@@ -54,9 +39,7 @@ export function Hero() {
         delay: 0.15,
         immediateRender: false,
       })
-      // Bottle entrance is opacity-only: <RealBottle> owns this element's
-      // transform (scroll drift), so animating y here would fight the scrub.
-      gsap.from('.hero__bottle', {
+      gsap.from('.bottle-stage', {
         autoAlpha: 0,
         duration: 1.1,
         ease: 'power2.out',
@@ -64,32 +47,46 @@ export function Hero() {
         immediateRender: false,
       })
 
-      // Drive the ambient narrative purely from scroll progress.
-      const progress = ScrollTrigger.create({
-        trigger: rootEl,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: true,
-        onUpdate: (self) => {
-          heroProgress.value = self.progress
-        },
-      })
+      const endDistance = () => {
+        const mobile = window.matchMedia('(max-width: 767px)').matches
+        const mult = mobile ? 2.0 : 2.5
+        return '+=' + Math.round(window.innerHeight * mult)
+      }
 
-      // Editorial column drifts up gently as the stage exits — small travel,
-      // stays readable, never leaves the sticky stage to overlap sections.
+      gsap.set('.bottle-stage__image--front', { autoAlpha: 1 })
+      gsap.set('.bottle-stage__image--side, .bottle-stage__image--back', { autoAlpha: 0 })
+      gsap.set('.hero__story-line--front', { autoAlpha: 1 })
+      gsap.set('.hero__story-line--side, .hero__story-line--back', { autoAlpha: 0 })
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: rootEl,
           start: 'top top',
-          end: 'bottom bottom',
+          end: endDistance,
+          pin: stageEl,
+          pinSpacing: true,
           scrub: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            heroProgress.value = self.progress
+          },
         },
       })
-      tl.to('.hero__editorial', { y: -24, opacity: 0.85, ease: 'none' }, 0)
-      tl.to('.hero__scroll-hint', { autoAlpha: 0, duration: 0.2 }, 0)
+
+      tl.to('.hero__scroll-hint', { autoAlpha: 0, duration: 0.15 }, 0)
+
+      tl.to('.bottle-stage__image--front', { autoAlpha: 0, duration: 0.2, ease: 'power2.inOut' }, 0.3)
+      tl.to('.bottle-stage__image--side', { autoAlpha: 1, duration: 0.2, ease: 'power2.inOut' }, 0.3)
+      tl.to('.hero__story-line--front', { autoAlpha: 0, duration: 0.2, ease: 'power2.inOut' }, 0.3)
+      tl.to('.hero__story-line--side', { autoAlpha: 1, duration: 0.2, ease: 'power2.inOut' }, 0.3)
+
+      tl.to('.bottle-stage__image--side', { autoAlpha: 0, duration: 0.2, ease: 'power2.inOut' }, 0.63)
+      tl.to('.bottle-stage__image--back', { autoAlpha: 1, duration: 0.2, ease: 'power2.inOut' }, 0.63)
+      tl.to('.hero__story-line--side', { autoAlpha: 0, duration: 0.2, ease: 'power2.inOut' }, 0.63)
+      tl.to('.hero__story-line--back', { autoAlpha: 1, duration: 0.2, ease: 'power2.inOut' }, 0.63)
 
       return () => {
-        progress.kill()
         tl.scrollTrigger?.kill()
         tl.kill()
       }
@@ -99,7 +96,7 @@ export function Hero() {
 
   return (
     <div className="hero" id="top" ref={root}>
-      <div className="hero__stage">
+      <div className="hero__stage" ref={stage}>
         <div className="hero__canvas" aria-hidden="true">
           <Scene reduced={reduced} inView={inView} />
         </div>
@@ -118,10 +115,20 @@ export function Hero() {
                 Green &amp; Clean.
               </h1>
 
-              <p className="hero__sub">
-                100% Pure Mustard Oil for everyday Indian cooking — from the
-                field to your kitchen.
-              </p>
+              <div className="hero__story">
+                <p className="hero__sub hero__story-line hero__story-line--front">
+                  100% Pure Mustard Oil for everyday Indian cooking — from the
+                  field to your kitchen.
+                </p>
+                <p className="hero__sub hero__story-line hero__story-line--side">
+                  From kisaan to rasoi — mustard seeds sourced and pressed with
+                  care, the way it has always been done.
+                </p>
+                <p className="hero__sub hero__story-line hero__story-line--back">
+                  Quality you can trust on every pack — 100% Pure Mustard Oil,
+                  ready for your kitchen.
+                </p>
+              </div>
 
               <div className="hero__actions">
                 <a
@@ -146,8 +153,7 @@ export function Hero() {
               </span>
             </div>
 
-            {/* The real product photograph — the hero centerpiece. */}
-            <RealBottle reduced={reduced} />
+            <BottleStager />
           </div>
         </div>
 
@@ -159,4 +165,3 @@ export function Hero() {
     </div>
   )
 }
-

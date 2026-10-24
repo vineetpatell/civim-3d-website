@@ -29,11 +29,13 @@ function loadImage(url: string): Promise<HTMLImageElement> {
   })
 }
 
-let cache: Promise<string> | null = null
+const cache = new Map<string, Promise<string>>()
 
 export function cutoutBottle(url = '/bottle-front.png'): Promise<string> {
-  if (!cache) cache = doCutout(url).catch(() => url)
-  return cache
+  if (!cache.has(url)) {
+    cache.set(url, doCutout(url).catch(() => url))
+  }
+  return cache.get(url)!
 }
 
 async function doCutout(url: string): Promise<string> {

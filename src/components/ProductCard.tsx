@@ -6,7 +6,7 @@ import { useCart } from '../lib/cart'
 /**
  * Product card for grids and carousels:
  * real photo (or honest placeholder), name, category, price only when
- * confirmed, Add to Cart + View Details. Unpriced items show a clear
+ * confirmed, Add to Cart + Buy Now. Unpriced items show a clear
  * "Price to be confirmed" state — never a fabricated number.
  */
 export function ProductCard({ product }: { product: Product }) {

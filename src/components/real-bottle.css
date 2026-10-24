@@ -1,39 +1,41 @@
-/* --- Real product photo — the hero centerpiece -------------------------
-   The complete original photograph is shown untouched (cap, collar, amber
-   body, reflections, label, silhouette — full 887×1774). The white studio
-   backdrop is removed at runtime by `lib/cutout.ts` (border-connected
-   flood fill, so interior label whites and glass highlights survive); this
-   CSS only sizes the transparent result and grounds it with a shadow. */
-.hero__bottle {
+/* -----------------------------------------------------------------------
+   Bottle stage — real CIVIM product photography, scroll-driven front→side→back.
+   ----------------------------------------------------------------------- */
+
+/* The stage is a grid child of the two-column hero grid (right column). */
+.bottle-stage {
   grid-column: 2;
   grid-row: 1;
   align-self: start;
   justify-self: center;
+  width: min(24vw, 280px);
+  min-width: 160px;
+  max-height: 55dvh;
+  margin-top: 8.2rem;
+  aspect-ratio: 887 / 1774;
+  position: relative;
   z-index: 2;
   pointer-events: none;
-  width: min(30vw, 400px);
-  min-width: 240px;
-  /* Tall photo: never exceed the viewport height — cap and base stay framed. */
-  max-height: 88vh;
-  max-height: 88dvh;
-  aspect-ratio: 887 / 1774;
-  will-change: transform;
 }
 
-.hero__bottle-mouse,
-.hero__bottle-float {
-  height: 100%;
-  will-change: transform;
-}
-
-.hero__bottle-float {
+/* Fixed-size image container — all three views live in the same box. */
+.bottle-stage__images {
   position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
-.hero__bottle-img {
+.bottle-stage__image {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: contain;
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
   /* Interim (opaque photo): multiply melts white into ivory. No filter here —
      any filter would isolate the blending and bring the white box back. */
   mix-blend-mode: multiply;
@@ -41,15 +43,19 @@
   -webkit-user-drag: none;
 }
 
+.bottle-stage__image--front {
+  opacity: 1;
+}
+
 /* Once the transparent cut-out swaps in, blending is off and a
    silhouette-correct shadow applies. */
-.hero__bottle.is-cutout .hero__bottle-img {
+.bottle-stage.is-cutout .bottle-stage__image {
   mix-blend-mode: normal;
   filter: drop-shadow(0 36px 44px rgba(28, 58, 43, 0.24));
 }
 
 /* Soft grounding shadow beneath the photographed base. */
-.hero__bottle-shadow {
+.bottle-stage__shadow {
   position: absolute;
   left: 12%;
   right: 12%;
@@ -64,113 +70,25 @@
   pointer-events: none;
 }
 
-/* --- Real-bottle responsive tuning (photo height, not canvas) ----------- */
-@media (max-width: 900px) {
-  .hero__bottle {
-    width: min(34vw, 320px);
-    min-width: 210px;
-  }
-}
-
-/*
- * Mobile (≤767px): the bottle becomes the FIRST element of the hero stack.
- *
- * Placement is set HERE (not in nav-hero.css) on purpose: this file is imported
- * AFTER nav-hero.css, so at equal specificity these rules win the cascade and
- * override the base `.hero__bottle { grid-column: 2 }` above — pinning the
- * bottle to row 1 / column 1, top of the single-column stack.
- *
- * Sizing is driven by HEIGHT so the complete 887×1774 photograph — cap to
- * base — stays framed and its aspect ratio is never distorted. `width: auto`
- * lets `aspect-ratio` derive the width from that height, and the existing
- * `.hero__bottle-img { object-fit: contain }` guarantees the full bottle fits.
- *
- * clamp(280px, 48dvh, 420px) keeps the bottle prominent across short phones
- * (375×667 ≈ 320px) through tall ones (430×932 clamps to 420px) without
- * leaving excessive empty space.
- */
+/* Mobile (≤767px): bottle below text/CTAs, single-column layout. */
 @media (max-width: 767px) {
-  .hero__bottle {
+  .bottle-stage {
     grid-column: 1;
     grid-row: 1;
     align-self: center;
     justify-self: center;
     width: auto;
-    height: clamp(280px, 48dvh, 420px);
+    height: clamp(220px, 40dvh, 320px);
     min-width: 0;
-    /* Compact: no dead space above or below the bottle. */
+    max-height: 52dvh;
+    max-height: 52svh;
+    aspect-ratio: 887 / 1774;
+    z-index: 2;
+    overflow: hidden;
     margin-top: 0;
   }
-  .hero__bottle-shadow {
-    bottom: -0.75rem;
-  }
 }
 
-/* --- Front ↔ back crossfade container ---------------------------------- */
-.hero__bottle-images {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.hero__bottle-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  mix-blend-mode: multiply;
-  opacity: 0;
-  z-index: 1;
-  user-select: none;
-  -webkit-user-drag: none;
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-/* Active image is fully visible on top. */
-.hero__bottle-image.is-active {
-  opacity: 1;
-  z-index: 2;
-}
-
-/* Front image: once cut out, drop the multiply blend and add a shadow. */
-.hero__bottle.is-cutout .hero__bottle-image--front {
-  mix-blend-mode: normal;
-  filter: drop-shadow(0 36px 44px rgba(28, 58, 43, 0.24));
-}
-
-/* Crossfade with subtle scale/rotation illusion during the flip.
-   Outgoing (active) shrinks and tilts back; incoming grows and tilts
-   forward — creating a premium "turning the bottle" feel without ever
-   showing two complete bottles at once. */
-.hero__bottle-images.is-flipping .hero__bottle-image.is-active {
-  opacity: 0;
-  transform: scale(0.96) rotate(-2deg);
-  z-index: 1;
-}
-.hero__bottle-images.is-flipping .hero__bottle-image:not(.is-active) {
-  opacity: 1;
-  transform: scale(1.04) rotate(2deg);
-  z-index: 2;
-}
-
-/* Reduced motion: the GSAP float/parallax/drift never start (see
-   <RealBottle>), so the untouched photo renders as a composed still. */
-@media (prefers-reduced-motion: reduce) {
-  .hero__bottle,
-  .hero__bottle-mouse,
-  .hero__bottle-float {
-    will-change: auto;
-  }
-  .hero__bottle-images.is-flipping .hero__bottle-image {
-    transition: none;
-    transform: none;
-  }
-  .hero__bottle-images.is-flipping .hero__bottle-image.is-active {
-    opacity: 1;
-  }
-  .hero__bottle-images.is-flipping .hero__bottle-image:not(.is-active) {
-    opacity: 0;
-  }
-}
+.bottle-stage__image--front { z-index: 1; }
+.bottle-stage__image--side { z-index: 2; }
+.bottle-stage__image--back { z-index: 3; }

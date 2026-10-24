@@ -3,7 +3,6 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { Nav } from './components/Nav'
 import { Footer } from './components/Footer'
 import { MobileBottomNav } from './components/MobileBottomNav'
-import { MobileTopBar } from './components/MobileTopBar'
 import { PWAInstallPrompt } from './components/PWAInstallPrompt'
 import { ScrollToTop } from './components/ScrollToTop'
 import { CartProvider } from './lib/cart'
@@ -47,7 +46,6 @@ export default function App() {
       <div className="grain" aria-hidden="true" />
       <ScrollToTop />
       <Nav />
-      <MobileTopBar />
       <main>
         <Routes>
           <Route path="/" element={<HomePage />} />

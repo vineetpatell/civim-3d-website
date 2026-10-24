@@ -96,22 +96,44 @@ export function RealBottle({ reduced }: { reduced: boolean }) {
         },
       })
 
-      // Front ↔ back crossfade timeline — runs indefinitely with holds between
-      // fades so each label is readable for several seconds. Uses autoAlpha so
-      // the inactive image also gets `visibility: hidden` (no paint, no flash).
+      // Front is visible immediately. The flip to back label only happens
+      // when scrolling down through the hero (progress > 0.5), so the front
+      // label is always seen first. GSAP scrub keeps the transition smooth.
       const frontImg = document.querySelector('.hero__bottle-image--front')
       const backImg = document.querySelector('.hero__bottle-image--back')
       if (frontImg && backImg) {
+        // Start with back hidden (front visible by default)
         gsap.set(backImg, { autoAlpha: 0 })
-        const flip = gsap.timeline({ repeat: -1 })
-        flip
-          .to(frontImg, { autoAlpha: 0, duration: 0.8, ease: 'power2.inOut' }, 0)
-          .to(backImg, { autoAlpha: 1, duration: 0.8, ease: 'power2.inOut' }, 0)
-          .to({}, { duration: 6 }) // hold back label visible
-          .to(frontImg, { autoAlpha: 1, duration: 0.8, ease: 'power2.inOut' })
-          .to(backImg, { autoAlpha: 0, duration: 0.8, ease: 'power2.inOut' })
-          .to({}, { duration: 6 }) // hold front label visible
+        // Flip to back as user scrolls down (only when progress > 0.5)
+        gsap.to(backImg, {
+          autoAlpha: 1,
+          duration: 0.8,
+          ease: 'power2.inOut',
+          scrollTrigger: {
+            trigger: '.hero',
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: true,
+            toggleActions: 'restart none reverse none',
+          },
+        })
+        // Front fades out simultaneously with back fade-in
+        gsap.to(frontImg, {
+          autoAlpha: 0,
+          duration: 0.8,
+          ease: 'power2.inOut',
+          scrollTrigger: {
+            trigger: '.hero',
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: true,
+            toggleActions: 'restart none reverse none',
+          },
+        })
       }
+
+      // Front is visible immediately; no auto-flip. The GSAP scroll trigger below
+      // flips to the back label when the user scrolls down through the hero.
 
       return () => {
         float.kill()
